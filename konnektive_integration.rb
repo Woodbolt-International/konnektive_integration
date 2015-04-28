@@ -14,8 +14,8 @@ class KonnektiveIntegration < Sinatra::Base
     @api = KonnektiveApi.new(ENV['KONNEKTIVE_LOGIN'], ENV['KONNEKTIVE_PASSWORD'])
   end
 
-  # I think it should be a POST, not sure yet
-  get '/get_orders' do
+  # NOTE: I think it should be a POST, not sure yet
+  post '/get_orders' do
     date_start = Date.today.prev_day.strftime("%m/%d/%Y")
     api.get_orders(date_start)
   end
