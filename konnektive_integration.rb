@@ -8,15 +8,18 @@ require 'sinatra'
 
 class KonnektiveIntegration < Sinatra::Base
   set :logging, true
-  attr_reader :api
 
-  before do
-    @api = KonnektiveApi.new(ENV['KONNEKTIVE_LOGIN'], ENV['KONNEKTIVE_PASSWORD'])
+  configure do
+    set :api, KonnektiveApi.new(ENV['KONNEKTIVE_LOGIN'], ENV['KONNEKTIVE_PASSWORD'])
   end
 
-  # NOTE: I think it should be a POST, not sure yet
+  before do
+    content_type 'application/json'
+  end
+
   post '/get_orders' do
     date_start = Date.today.prev_day.strftime("%m/%d/%Y")
-    api.get_orders(date_start)
+    orders = settings.api.get_orders(date_start)
+    WombatDataAdapter.new(orders).to_wombat
   end
 end
