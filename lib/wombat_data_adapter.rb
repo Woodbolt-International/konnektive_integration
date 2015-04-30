@@ -14,10 +14,10 @@ class WombatDataAdapter
 
   private
   def build_order(order)
-    {
+    {order: {
       id: order['clientOrderId'],
       status: order['orderStatus'],
-      channell: 'konnektive',
+      channel: 'konnektive',
       email: order['emailAddress'],
       currency: "USD",
       placed_on: order['dateCreated'],
@@ -33,6 +33,6 @@ class WombatDataAdapter
           price: item['price']
         }
       }
-    }
+    }}
   end
 end
