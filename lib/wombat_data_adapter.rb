@@ -15,7 +15,7 @@ class WombatDataAdapter
   private
   def build_order(order)
     {
-      id: order['clientOrderId'],
+      id: "KN#{order['clientOrderId']}",
       status: order['orderStatus'],
       channel: 'konnektive',
       email: order['emailAddress'],
