@@ -1,3 +1,5 @@
+class KonnektiveError < StandardError ; end
+
 class KonnektiveApi
   attr_reader :login, :password
 
@@ -21,8 +23,7 @@ class KonnektiveApi
       headers: { 'Content-Type' => 'application/json' }
     ).parsed_response)
 
-    return [] unless response['result'] == 'SUCCESS'
-
+    raise ::KonnektiveError.new response["message"] if response['result'] == 'ERROR'
     response['message']['data']
   end
 end

@@ -9,12 +9,12 @@ class WombatDataAdapter
   def to_wombat
     data.map do |order|
       build_order(order)
-    end.to_json
+    end
   end
 
   private
   def build_order(order)
-    {order: {
+    {
       id: order['clientOrderId'],
       status: order['orderStatus'],
       channel: 'konnektive',
@@ -33,6 +33,6 @@ class WombatDataAdapter
           price: item['price']
         }
       }
-    }}
+    }
   end
 end

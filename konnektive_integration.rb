@@ -1,25 +1,28 @@
-if ENV['RACK_ENV'] != 'production'
-  require 'dotenv'
-  Dotenv.load
-end
+require 'sinatra'
+require 'endpoint_base'
 
 Dir['./lib/**/*.rb'].each(&method(:require))
-require 'sinatra'
 
-class KonnektiveIntegration < Sinatra::Base
+class KonnektiveIntegration < EndpointBase::Sinatra::Base
   set :logging, true
-
-  configure do
-    set :api, KonnektiveApi.new(ENV['KONNEKTIVE_LOGIN'], ENV['KONNEKTIVE_PASSWORD'])
-  end
+  attr_reader :api
 
   before do
     content_type 'application/json'
+    @api = KonnektiveApi.new(@config['KONNEKTIVE_LOGIN'], @config['KONNEKTIVE_PASSWORD'])
   end
 
   post '/get_orders' do
     date_start = Date.today.prev_day.strftime("%m/%d/%Y")
-    orders = settings.api.get_orders(date_start)
-    WombatDataAdapter.new(orders).to_wombat
+    begin
+      orders = api.get_orders(date_start)
+      WombatDataAdapter.new(orders).to_wombat.each do |order|
+        add_object :order, order
+      end
+      result 200, 'The orders were imported correctly'
+    rescue KonnektiveError => e
+      result 500, e.message
+    end
   end
+
 end
