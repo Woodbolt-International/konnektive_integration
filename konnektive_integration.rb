@@ -13,7 +13,7 @@ class KonnektiveIntegration < EndpointBase::Sinatra::Base
   end
 
   post '/get_orders' do
-    date_start = Date.today.prev_day.strftime("%m/%d/%Y")
+    date_start = Date.today.strftime("%m/%d/%Y")
     begin
       orders = api.get_orders(date_start)
       WombatDataAdapter.new(orders).to_wombat.each do |order|
