@@ -16,7 +16,7 @@ class WombatDataAdapter
   def build_order(order)
     {
       id: "KN#{order['clientOrderId']}",
-      status: order['orderStatus'],
+      status: order['orderStatus'].titleize,
       channel: 'konnektive',
       email: order['emailAddress'],
       currency: "USD",
@@ -30,7 +30,8 @@ class WombatDataAdapter
           product_id: item['productId'],
           name: item['name'],
           quantity: item['qty'],
-          price: item['price']
+          price: item['price'],
+          sku: item['productId']
         }
       }
     }
