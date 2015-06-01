@@ -16,6 +16,8 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    bugsnag (2.8.6)
+      multi_json (~> 1.0)
     foreman (0.78.0)
       thor (~> 0.19.1)
     httparty (0.13.3)
@@ -56,6 +58,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bugsnag
   endpoint_base!
   foreman
   httparty

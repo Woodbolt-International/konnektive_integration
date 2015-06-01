@@ -1,11 +1,17 @@
 require 'sinatra'
+require 'bugsnag'
 require 'endpoint_base'
+
+Bugsnag.configure do |config|
+  config.api_key = "cd3ae54909a0f5fe5a1792b9c84f388b"
+end
 
 Dir['./lib/**/*.rb'].each(&method(:require))
 
 class KonnektiveIntegration < EndpointBase::Sinatra::Base
   set :logging, true
   attr_reader :api
+  use Bugsnag::Rack
 
   before do
     content_type 'application/json'
