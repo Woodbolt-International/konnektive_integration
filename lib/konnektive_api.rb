@@ -23,7 +23,12 @@ class KonnektiveApi
       headers: { 'Content-Type' => 'application/json' }
     ).parsed_response)
 
-    raise ::KonnektiveError.new response["message"] if response['result'] == 'ERROR'
+    if response['result'] == 'ERROR'
+      return [] if response['message'] == "No orders matching those parameters could be found"
+    else
+      raise ::KonnektiveError.new response["message"]
+    end
+
     response['message']['data']
   end
 end
