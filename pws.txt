@@ -1,0 +1,6 @@
+{
+  "parameters": {
+    "KONNEKTIVE_LOGIN": "konnektive-api",
+    "KONNEKTIVE_PASSWORD": "f00d1sg00d"
+  }
+}

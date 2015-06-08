@@ -27,7 +27,6 @@ class KonnektiveIntegration < EndpointBase::Sinatra::Base
       end
       result 200, 'The orders were imported correctly'
     rescue KonnektiveError => e
-      logger.info "@@@@@ SOME ERROR #{e.message}"
       result 500, e.message
     end
   end
