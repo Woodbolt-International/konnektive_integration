@@ -24,9 +24,11 @@ class KonnektiveApi
     ).parsed_response)
 
     if response['result'] == 'ERROR'
-      return [] if response['message'] == "No orders matching those parameters could be found"
-    else
-      raise ::KonnektiveError.new response["message"]
+      if response['message'] == "No orders matching those parameters could be found"
+        return []
+      else
+        raise ::KonnektiveError.new response["message"]
+      end
     end
 
     response['message']['data']

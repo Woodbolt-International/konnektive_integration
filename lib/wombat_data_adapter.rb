@@ -23,8 +23,8 @@ class WombatDataAdapter
       placed_on: order['dateCreated'],
       updated_at: order['dateCreated'],
       line_items: line_items(order),
-      shipping_address: shipping_address,
-      billing_address: billing_address
+      shipping_address: shipping_address(order),
+      billing_address: billing_address(order)
     }
   end
 
