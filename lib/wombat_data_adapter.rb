@@ -19,6 +19,7 @@ class WombatDataAdapter
       status: order['orderStatus'].titleize,
       channel: 'konnektive',
       email: order['emailAddress'],
+      user_id: order['customerId'],
       currency: "USD",
       placed_on: order['dateCreated'],
       updated_at: order['dateCreated'],
