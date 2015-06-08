@@ -71,4 +71,11 @@ class WombatDataAdapter
       phone: order['phoneNumber']
     }
   end
+
+  def adjustments(order)
+    [
+      { name: 'tax', value: order['salesTax'].to_s.to_f, code: 'TAX' },
+      { name: 'shipping', value: order['baseShipping'].to_s.to_f, code: 'FRT' }
+    ]
+  end
 end
