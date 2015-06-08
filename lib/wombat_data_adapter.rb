@@ -23,6 +23,7 @@ class WombatDataAdapter
       currency: "USD",
       placed_on: order['dateCreated'],
       updated_at: order['dateCreated'],
+      totals: totals(order),
       line_items: line_items(order),
       adjustments: adjustments(order),
       shipping_address: shipping_address(order),
@@ -32,6 +33,18 @@ class WombatDataAdapter
   end
 
   # helpers
+  def totals(order)
+    {
+      item: line_items(order).inject(0){|sum,hash| sum + hash[:price] },
+      adjustment: adjustments(order).inject(0){|sum,hash| sum + hash[:value] },
+      tax: order['salesTax'].to_s.to_f,
+      shipping: order['baseShipping'].to_s.to_f,
+      payment: payments(order).inject(0){|sum,hash| sum + hash['amount'] },
+      order: order['totalAmount'].to_s.to_f,
+      discount: order['totalDiscount'].to_s.to_f
+    }
+  end
+
   def line_items(order)
     order['items'].keys.map do |id|
       item = order['items'][id]
