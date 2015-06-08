@@ -23,8 +23,10 @@ class WombatDataAdapter
       placed_on: order['dateCreated'],
       updated_at: order['dateCreated'],
       line_items: line_items(order),
+      adjustments: adjustments(order),
       shipping_address: shipping_address(order),
-      billing_address: billing_address(order)
+      billing_address: billing_address(order),
+      payments: payments(order)
     }
   end
 
@@ -34,11 +36,11 @@ class WombatDataAdapter
       item = order['items'][id]
 
       {
-        id: item['orderItemId'],
-        product_id: item['productId'],
+        id: item['orderItemId'].to_s.to_f,
+        product_id: item['productId'].to_s.to_f,
         name: item['name'],
-        quantity: item['qty'],
-        price: item['price'],
+        quantity: item['qty'].to_s.to_f,
+        price: item['price'].to_s.to_f,
         sku: item['productId']
       }
     end
@@ -76,6 +78,18 @@ class WombatDataAdapter
     [
       { name: 'tax', value: order['salesTax'].to_s.to_f, code: 'TAX' },
       { name: 'shipping', value: order['baseShipping'].to_s.to_f, code: 'FRT' }
+    ]
+  end
+
+  def payments(order)
+    [
+      {
+        # "number": 63, # ignored
+        "status": "completed",
+        "amount": 210,
+        "payment_method": order['paySource'].titleize,
+        amount: order['totalAmount'].to_s.to_f
+      }
     ]
   end
 end
