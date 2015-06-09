@@ -95,10 +95,10 @@ class WombatDataAdapter
       { name: 'shipping', value: order['baseShipping'].to_s.to_f, code: 'FRT' }
     ]
 
-    # base + {name: 'coupon', value: order['totalDiscount'].to_s.to_f, code: order['couponCode'] } if order['couponCode']
-    if  order['couponCode']
-      return base + [{name: 'coupon', value: order['totalDiscount'].to_s.to_f, code: order['couponCode'] }]
+    if order['couponCode']
+      return base + [{name: order['couponCode'], value: order['totalDiscount'].to_s.to_f, code: order['couponCode'].upcase }]
     end
+
     base
   end
 
