@@ -3,3 +3,4 @@
 config/deploy.rb
 .bundle/
 .env
+secrets.txt
