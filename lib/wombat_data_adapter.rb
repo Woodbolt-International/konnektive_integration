@@ -90,10 +90,16 @@ class WombatDataAdapter
   end
 
   def adjustments(order)
-    [
+    base = [
       { name: 'tax', value: order['salesTax'].to_s.to_f, code: 'TAX' },
       { name: 'shipping', value: order['baseShipping'].to_s.to_f, code: 'FRT' }
     ]
+
+    # base + {name: 'coupon', value: order['totalDiscount'].to_s.to_f, code: order['couponCode'] } if order['couponCode']
+    if  order['couponCode']
+      return base + [{name: 'coupon', value: order['totalDiscount'].to_s.to_f, code: order['couponCode'] }]
+    end
+    base
   end
 
   def payments(order)
