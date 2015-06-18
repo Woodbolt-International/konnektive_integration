@@ -31,4 +31,20 @@ class KonnektiveIntegration < EndpointBase::Sinatra::Base
     end
   end
 
+  post '/update_fulfillment' do
+    request.body.rewind  # in case someone already read it
+    params = JSON.parse(request.body.read)['shipment']
+
+    begin
+      msg = api.update_fulfillment(
+        params['order_id'],
+        params['status'].upcase,
+        params['tracking'],
+        Date.parse(params['shipped_at']).strftime("%m/%d/%Y")
+      )
+      result 200, msg
+    rescue KonnektiveError => e
+      result 500, e.message
+    end
+  end
 end
