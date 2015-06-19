@@ -96,7 +96,7 @@ class WombatDataAdapter
     ]
 
     if  order['couponCode']
-      return base + [{name: 'coupon', value: order['totalDiscount'].to_s.to_f, code: order['couponCode'] }]
+      return base + [{name: order['couponCode'], value: order['totalDiscount'].to_s.to_f, code: order['couponCode'].upcase }]
     end
 
     base
