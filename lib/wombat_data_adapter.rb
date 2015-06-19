@@ -116,10 +116,7 @@ class WombatDataAdapter
   end
 
   def shipments(order)
-    fulfillments = order['fulfillments'] || {}
-    fulfillments.keys.map do |f|
-      s = order['fulfillments'][id]
-
+    (order['fulfillments'] || []).map do |s|
       {
         number: s['fulfillmentId'],
         #cost: s['cost'],
