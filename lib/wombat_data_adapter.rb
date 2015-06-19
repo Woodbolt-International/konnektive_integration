@@ -122,8 +122,8 @@ class WombatDataAdapter
         #cost: s['cost'],
         status: s['status'].downcase,
         stock_location: "Konnektive",
-        shipping_method: s['shipCarrier'],
-        shipping_method_code: s['shipMethod'],
+        shipping_method: s['shipCarrier'] || "UPS",
+        shipping_method_code: s['shipMethod'] || "GND",
         tracking: s['trackingNumber'],
         #updated_at: s['dateCreated'],
         shipped_at: s['dateShipped']
