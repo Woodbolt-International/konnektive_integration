@@ -16,7 +16,7 @@ class WombatDataAdapter
   def build_order(order)
     {
       id: "KN#{order['clientOrderId']}",
-      status: order['orderStatus'].titleize,
+      status: order['orderStatus'].downcase,
       channel: 'konnektive',
       email: order['emailAddress'],
       user_id: order['customerId'],
@@ -28,7 +28,8 @@ class WombatDataAdapter
       adjustments: adjustments(order),
       shipping_address: shipping_address(order),
       billing_address: billing_address(order),
-      payments: payments(order)
+      payments: payments(order),
+      shipments: shipments(order)
     }
   end
 
@@ -112,5 +113,25 @@ class WombatDataAdapter
         amount: order['totalAmount'].to_s.to_f
       }
     ]
+  end
+
+  def shipments(order)
+    fulfillments = order['fulfillments'] || {}
+    fulfillments.keys.map do |f|
+      s = order['fulfillments'][id]
+
+      {
+        number: s['fulfillmentId'],
+        #cost: s['cost'],
+        status: s['status'].downcase,
+        stock_location: "Konnektive",
+        shipping_method: s['shipCarrier'],
+        shipping_method_code: s['shipMethod'],
+        tracking: s['trackingNumber'],
+        #updated_at: s['dateCreated'],
+        shipped_at: s['dateShipped']
+        #items: s['items']
+      }
+    end
   end
 end
