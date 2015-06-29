@@ -135,7 +135,7 @@ class WombatDataAdapter
         totals: {}, # DD: not sure if read by AX here
         updated_at: s['dateCreated'],
         channel: 'konnektive',
-        items: [] # DD: not sure if read by AX here
+        items: [], # DD: not sure if read by AX here
         shipping_method_code: s['shipMethod'] || "GND",
         billing_address: billing_address(order),
         shipping_address: shipping_address(order)
