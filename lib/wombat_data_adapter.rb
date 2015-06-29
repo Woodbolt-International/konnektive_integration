@@ -13,9 +13,10 @@ class WombatDataAdapter
   end
 
   private
+
   def build_order(order)
     {
-      id: "KN#{order['clientOrderId']}",
+      id: order_id(order),
       status: order['orderStatus'].downcase,
       channel: 'konnektive',
       email: order['emailAddress'],
@@ -31,6 +32,10 @@ class WombatDataAdapter
       payments: payments(order),
       shipments: shipments(order)
     }
+  end
+
+  def order_id(order)
+    "KN#{order['clientOrderId']}"
   end
 
   # helpers
@@ -96,7 +101,7 @@ class WombatDataAdapter
       { name: 'shipping', value: order['baseShipping'].to_s.to_f, code: 'FRT' }
     ]
 
-    if  order['couponCode']
+    if order['couponCode']
       return base + [{name: order['couponCode'], value: order['totalDiscount'].to_s.to_f, code: order['couponCode'].upcase }]
     end
 
@@ -118,16 +123,22 @@ class WombatDataAdapter
   def shipments(order)
     (order['fulfillments'] || []).map do |s|
       {
-        number: s['fulfillmentId'],
-        #cost: s['cost'],
+        id: "KN#{s['fulfillmentId']}",
+        order_id: order_id(order),
+        email: order['emailAddress'],
+        cost: order['baseShipping'].to_s.to_f / order['fulfillments'].count,
         status: s['status'].downcase,
         stock_location: "Konnektive",
         shipping_method: s['shipCarrier'] || "UPS",
-        shipping_method_code: s['shipMethod'] || "GND",
         tracking: s['trackingNumber'],
-        #updated_at: s['dateCreated'],
-        shipped_at: s['dateShipped']
-        #items: s['items']
+        shipped_at: s['dateShipped'],
+        totals: {}, # DD: not sure if read by AX here
+        updated_at: s['dateCreated'],
+        channel: 'konnektive',
+        items: [] # DD: not sure if read by AX here
+        shipping_method_code: s['shipMethod'] || "GND",
+        billing_address: billing_address(order),
+        shipping_address: shipping_address(order)
       }
     end
   end
