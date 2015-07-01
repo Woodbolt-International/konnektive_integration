@@ -39,7 +39,7 @@ class WombatDataAdapter
   end
 
   def format_date(date_str)
-    DateTime.parse(date_str).getutc.try(:iso8601)
+    Time.parse(date_str).getutc.iso8601
   end
 
   # helpers
