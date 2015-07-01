@@ -22,8 +22,8 @@ class WombatDataAdapter
       email: order['emailAddress'],
       user_id: order['customerId'],
       currency: "USD",
-      placed_on: order['dateCreated'],
-      updated_at: order['dateCreated'],
+      placed_on: format_date(order['dateCreated']),
+      updated_at: format_date(order['dateCreated']),
       totals: totals(order),
       line_items: line_items(order),
       adjustments: adjustments(order),
@@ -36,6 +36,10 @@ class WombatDataAdapter
 
   def order_id(order)
     "KN#{order['clientOrderId']}"
+  end
+
+  def format_date(date_str)
+    Time.parse(date_str).getutc.try(:iso8601) if date_str.present?
   end
 
   # helpers
@@ -137,9 +141,9 @@ class WombatDataAdapter
         stock_location: "Konnektive",
         shipping_method: s['shipCarrier'] || "UPS",
         tracking: s['trackingNumber'],
-        shipped_at: s['dateShipped'],
+        shipped_at: format_date(s['dateShipped']),
         totals: {}, # DD: not sure if read by AX here
-        updated_at: s['dateCreated'],
+        updated_at: format_date(s['dateCreated']),
         channel: 'konnektive',
         items: [], # DD: not sure if read by AX here
         shipping_method_code: s['shipMethod'] || "GND",
