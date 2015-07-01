@@ -111,11 +111,17 @@ class WombatDataAdapter
   def payments(order)
     [
       {
-        # "number": 63, # ignored
-        "status": "completed",
-        "amount": 210,
-        "payment_method": order['paySource'].titleize,
-        amount: order['totalAmount'].to_s.to_f
+        id: order['orderId'].to_s.to_f,
+        number: order['orderId'].to_s.to_f,
+        status: "completed",
+        amount: order['totalAmount'].to_s.to_f,
+        payment_method: order['paySource'].titleize,
+        payment_method_card: order['cardType'].to_s.downcase,
+        source: {
+          name: "#{order['firstName']} #{order['lastName']}",
+          cc_type: order['cardType'].to_s.downcase,
+          last_digits: order['cardLast4'].to_s.downcase
+        }
       }
     ]
   end
