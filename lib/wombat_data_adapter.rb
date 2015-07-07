@@ -20,16 +20,18 @@ class WombatDataAdapter
       status: order['orderStatus'].downcase,
       channel: 'konnektive',
       email: order['emailAddress'],
-      user_id: order['customerId'],
       currency: "USD",
       placed_on: format_date(order['dateCreated']),
       updated_at: format_date(order['dateCreated']),
       totals: totals(order),
-      line_items: line_items(order),
       adjustments: adjustments(order),
+      shipping_instruction: nil,
+      user_id: order['customerId'],
+      considered_risky: false,
+      line_items: line_items(order),
+      payments: payments(order),
       shipping_address: shipping_address(order),
       billing_address: billing_address(order),
-      payments: payments(order),
       shipments: shipments(order)
     }
   end
