@@ -53,7 +53,8 @@ class WombatDataAdapter
       shipping: order['baseShipping'].to_s.to_f,
       payment: payments(order).map {|e| e[:amount]}.inject(:+),
       order: order['totalAmount'].to_s.to_f,
-      discount: order['totalDiscount'].to_s.to_f
+      discount: order['totalDiscount'].to_s.to_f,
+      handling: 0
     }
   end
 
