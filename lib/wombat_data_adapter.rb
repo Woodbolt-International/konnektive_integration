@@ -44,16 +44,21 @@ class WombatDataAdapter
     Time.parse(date_str).getutc.iso8601 if date_str
   end
 
+  def trim_zero num
+    i, f = num.to_i, num.to_f
+    i == f ? i : f
+  end
+
   # helpers
   def totals(order)
     {
-      item: line_items(order).map {|e| e[:price]}.inject(:+),
-      adjustment: adjustments(order).map {|e| e[:value]}.inject(:+),
-      tax: order['salesTax'].to_s.to_f,
-      shipping: order['baseShipping'].to_s.to_f,
-      payment: payments(order).map {|e| e[:amount]}.inject(:+),
-      order: order['totalAmount'].to_s.to_f,
-      discount: order['totalDiscount'].to_s.to_f,
+      item: trim_zero( line_items(order).map {|e| e[:price]}.inject(:+) ),
+      adjustment: trim_zero( adjustments(order).map {|e| e[:value]}.inject(:+) ),
+      tax: trim_zero( order['salesTax'].to_s.to_f ),
+      shipping: trim_zero( order['baseShipping'].to_s.to_f ),
+      payment: trim_zero( payments(order).map {|e| e[:amount]}.inject(:+) ),
+      order: trim_zero( order['totalAmount'].to_s.to_f ),
+      discount: trim_zero( order['totalDiscount'].to_s.to_f ),
       handling: 0
     }
   end
@@ -64,12 +69,12 @@ class WombatDataAdapter
       item = order['items'][id]
 
       {
-        id: item['orderItemId'].to_s.to_f,
-        product_id: item['productId'].to_s.to_f,
+        id: item['orderItemId'].to_s.to_i,
+        product_id: item['productId'].to_s.to_i,
         name: item['name'],
-        quantity: item['qty'].to_s.to_f,
+        quantity: item['qty'].to_s.to_i,
         price: item['price'].to_s.to_f,
-        sku: item['productId']
+        sku: item['productId'].to_s.to_i
       }
     end
   end
@@ -118,8 +123,8 @@ class WombatDataAdapter
   def payments(order)
     [
       {
-        id: order['orderId'].to_s.to_f,
-        number: order['orderId'].to_s.to_f,
+        id: order['orderId'].to_s.to_i,
+        number: order['orderId'].to_s.to_i,
         status: "completed",
         amount: order['totalAmount'].to_s.to_f,
         payment_method: order['paySource'].titleize,
