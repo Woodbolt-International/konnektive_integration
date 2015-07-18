@@ -44,7 +44,8 @@ class WombatDataAdapter
     Time.parse(date_str).getutc.iso8601 if date_str
   end
 
-  def trim_zero num
+  # DD: http://stackoverflow.com/questions/18533026/trim-a-trailing-0
+  def trim_zero(num)
     i, f = num.to_i, num.to_f
     i == f ? i : f
   end
