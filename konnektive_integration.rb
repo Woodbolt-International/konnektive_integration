@@ -3,7 +3,7 @@ require 'bugsnag'
 require 'endpoint_base'
 
 Bugsnag.configure do |config|
-  config.api_key = "cd3ae54909a0f5fe5a1792b9c84f388b"
+  config.api_key = ENV['BUGSNAG_KEY']
 end
 
 Dir['./lib/**/*.rb'].each(&method(:require))
