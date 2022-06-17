@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/spree/endpoint_base.git
+  remote: https://github.com/spree/endpoint_base.git
   revision: b3077af5b54ba18ed47bdbef01395b0027ad6637
   specs:
     endpoint_base (0.3)
@@ -18,12 +18,14 @@ GEM
       tzinfo (~> 1.1)
     bugsnag (2.8.12)
       json (~> 1.7, >= 1.7.7)
+    concurrent-ruby (1.1.10)
     foreman (0.78.0)
       thor (~> 0.19.1)
     httparty (0.13.3)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
-    i18n (0.7.0)
+    i18n (0.9.5)
+      concurrent-ruby (~> 1.0)
     jbuilder (2.3.1)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
